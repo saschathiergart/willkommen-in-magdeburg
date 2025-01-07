@@ -41,7 +41,7 @@ jobs:
       - name: Build
         run: |
           echo "Running Hugo build..."
-          hugo --minify --debug
+          hugo --minify
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
