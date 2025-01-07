@@ -28,11 +28,6 @@ jobs:
           hugo-version: 'latest'
           extended: true
           
-      - name: Copy static assets
-        run: |
-          mkdir -p static/css
-          cp assets/css/main.css static/css/
-          
       - name: Build
         run: hugo --minify
         
