@@ -1,119 +1,70 @@
 {
+  "lastUpdated": "2024-01-15T10:00:00Z",
   "incidents": [
     {
-      "id": "2023-12-20-001",
-      "date": "2023-12-20T20:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Ernst-Reuter-Allee",
-        "coordinates": null
-      },
-      "description": "Ein Deutscher schlug einem Mann mit Migrationsgeschichte mit der Faust ins Gesicht und sagte: 'Wegen Leuten wie dir passiert sowas'",
+      "date": "2024-01-05",
+      "location": "Straßenbahn, Magdeburg",
+      "description": "Saeed Saeed (24, Student und Mitglied des Integrationsbeirats) wurde in einer Straßenbahn angegriffen, nachdem er rassistische Beleidigungen konfrontierte",
+      "type": "physical_attack",
+      "status": "verified",
       "sources": [
         {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
+          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
+          "name": "taz"
         }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
+      ]
     },
     {
-      "id": "2023-12-21-001",
-      "date": "2023-12-21T12:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Breiter Weg",
-        "coordinates": null
-      },
-      "description": "Ein Mann wurde von einem Unbekannten von einem Fahrrad gestoßen und rassistisch beleidigt",
+      "date": "2024-01-04",
+      "location": "Magdeburg",
+      "description": "Eine syrische Familie fand ein Hakenkreuz an ihrer Wohnungstür, nachdem sie in der Nacht zuvor Kratzgeräusche von Personen gehört hatten, die versuchten einzubrechen",
+      "type": "property_damage",
+      "status": "verified",
       "sources": [
         {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
+          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
+          "name": "taz"
         }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
+      ]
     },
     {
-      "id": "2023-12-22-001",
-      "date": "2023-12-22T14:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Breiter Weg",
-        "coordinates": null
-      },
-      "description": "Ein Mann wurde von einem Unbekannten geschlagen und mit den Worten 'Verpiss dich in dein Land und lieg uns Deutschen nicht weiter auf der Tasche' beleidigt",
+      "date": "2024-01-01",
+      "location": "Haltestelle Neustadt, Magdeburg",
+      "description": "Der 31-jährige DJ Brahim B. wurde von einer Gruppe von 5 Männern und einer Frau angegriffen. Er wurde an der Jacke gepackt, geschlagen und mit einem Teleskopschlagstock attackiert",
+      "type": "physical_attack",
+      "status": "verified",
       "sources": [
         {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
+          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
+          "name": "taz"
         }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
+      ]
     },
     {
-      "id": "2023-12-23-001",
-      "date": "2023-12-23T16:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Otto-von-Guericke-Straße",
-        "coordinates": null
-      },
-      "description": "Eine Frau wurde verbal bedroht und geschlagen. Der Täter rief u.a. 'Wir vergasen euch alle'",
+      "date": "2023-12-24",
+      "location": "Magdeburg",
+      "description": "Eine 22-jährige Intensivkrankenschwester (die Opfer des ursprünglichen Angriffs behandelte) wurde nach ihrer Schicht rassistisch beleidigt und ins Gesicht geschlagen",
+      "type": "physical_attack",
+      "status": "verified",
       "sources": [
         {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
+          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
+          "name": "taz"
         }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
+      ]
     },
     {
-      "id": "2023-12-28-001",
-      "date": "2023-12-28T13:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Hauptbahnhof",
-        "coordinates": null
-      },
-      "description": "Eine Frau aus dem Iran wurde im Hauptbahnhof bespuckt und rassistisch beleidigt",
+      "date": "2023-12-23",
+      "location": "Magdeburg",
+      "description": "Ein 13-jähriger Junge wurde im Aufzug seines Wohnhauses rassistisch beleidigt und gewürgt",
+      "type": "physical_attack",
+      "status": "verified",
       "sources": [
         {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
+          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
+          "name": "taz"
         }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
-    },
-    {
-      "id": "2024-01-01-001",
-      "date": "2024-01-01T00:00:00+01:00",
-      "location": {
-        "city": "Magdeburg",
-        "district": "Bahnhof Neustadt",
-        "coordinates": null
-      },
-      "description": "Ein 31-jähriger Mann wurde von sechs Personen (5 Männer, 1 Frau) mit Bierflaschen und Stöcken angegriffen und schwer verletzt",
-      "sources": [
-        {
-          "name": "MDR",
-          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
-          "date": "2025-01-07"
-        }
-      ],
-      "officialReportId": null,
-      "verificationStatus": "verified"
+      ]
     }
-  ],
-  "lastUpdated": "2024-01-07T14:00:00Z"
+  ]
 } 

@@ -13,6 +13,11 @@ SOURCES = [
         'name': 'MDR Sachsen-Anhalt',
         'feed': 'https://www.mdr.de/nachrichten/index-rss.xml',
         'keywords': ['übergriff', 'rassismus', 'magdeburg', 'angriff', 'gewalt']
+    },
+    {
+        'name': 'taz',
+        'feed': 'https://taz.de/!p4608;rss/',
+        'keywords': ['magdeburg', 'rassismus', 'übergriff', 'angriff', 'gewalt', 'rechtsextrem', 'fremdenfeindlich']
     }
 ]
 
@@ -27,45 +32,32 @@ def extract_text_from_article(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     
-    # MDR specific extraction - adjust selectors as needed
-    article = soup.select_one('article')
-    if not article:
-        return None
+    # MDR specific extraction
+    if 'mdr.de' in url:
+        article = soup.select_one('article')
+        if article:
+            paragraphs = article.select('p')
+            return ' '.join(p.get_text() for p in paragraphs)
     
-    paragraphs = article.select('p')
-    return ' '.join(p.get_text() for p in paragraphs)
+    # taz specific extraction
+    if 'taz.de' in url:
+        article = soup.select_one('.article')
+        if article:
+            paragraphs = article.select('p')
+            return ' '.join(p.get_text() for p in paragraphs)
+    
+    return None
 
 def parse_with_llm(article_text, url, source_name):
     """Use OpenAI to parse article text into structured incident data"""
     
-    prompt = f"""
-    Analyze this news article about potential hate crimes or racist incidents in Magdeburg and extract the following information in JSON format:
-    - Date and time of the incident (if mentioned)
-    - Location (district and city)
-    - Description of what happened
-    - Whether this appears to be a verified incident
-    
-    Only return incidents that are clearly hate crimes or racist attacks. If no such incident is described, return null.
-    
-    Format the response as a JSON object matching this structure:
-    {{
-        "date": "YYYY-MM-DDTHH:MM:SS+01:00",
-        "location": {{
-            "city": "Magdeburg",
-            "district": "district name",
-            "coordinates": null
-        }},
-        "description": "Description in German",
-        "sources": [
-            {{
-                "name": "{source_name}",
-                "url": "{url}",
-                "date": "YYYY-MM-DD"
-            }}
-        ],
-        "officialReportId": null,
-        "verificationStatus": "verified"
-    }}
+    prompt = f"""Extract incident information from this article text. Format as JSON with:
+    - date (YYYY-MM-DD)
+    - location (specific place in Magdeburg)
+    - description (short factual description)
+    - sources (array with url and name)
+    - type (physical_attack, verbal_attack, property_damage, or other)
+    - status (verified if confirmed by police/officials)
 
     Article text:
     {article_text}
@@ -73,22 +65,18 @@ def parse_with_llm(article_text, url, source_name):
 
     response = client.chat.completions.create(
         model="gpt-4-turbo-preview",
-        messages=[
-            {"role": "system", "content": "You are a precise incident data extractor. Only extract verified incidents of hate crimes or racist attacks in Magdeburg. Return null if no such incident is described."},
-            {"role": "user", "content": prompt}
-        ],
-        response_format={"type": "json_object"}
+        messages=[{"role": "user", "content": prompt}]
     )
 
     try:
-        result = json.loads(response.choices[0].message.content)
-        if result and result.get('date'):  # Only return if incident was found
-            # Generate an ID based on the date
-            date_part = result['date'][:10].replace('-', '')
-            result['id'] = f"{date_part}-001"  # You might want to handle multiple incidents per day
-            return result
-        return None
-    except json.JSONDecodeError:
+        incident = json.loads(response.choices[0].message.content)
+        incident['sources'].append({
+            'url': url,
+            'name': source_name
+        })
+        return incident
+    except:
+        print(f"Failed to parse incident from {url}")
         return None
 
 def create_pull_request(new_incidents):
