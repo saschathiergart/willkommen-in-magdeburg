@@ -8,8 +8,8 @@ on:
 jobs:
   monitor:
     runs-on: ubuntu-22.04
-    outputs:
-      changes_detected: ${{ steps.check_changes.outputs.changes_detected }}
+    permissions:
+      contents: write
     
     steps:
       - uses: actions/checkout@v3
@@ -36,16 +36,20 @@ jobs:
           fi
           python .github/scripts/monitor_news.py
 
-      - name: Check for changes
-        id: check_changes
+      - name: Commit and push if changed
         run: |
-          if git diff --name-only | grep -q "data/incidents.json"; then
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/incidents.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
           else
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            git commit -m "Update incidents from news monitor"
+            git push
           fi
 
   deploy:
     needs: monitor
-    if: needs.monitor.outputs.changes_detected == 'true'
+    if: success() && github.event_name != 'schedule'
     uses: ./.github/workflows/hugo-deploy.yml 
