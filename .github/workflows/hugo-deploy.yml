@@ -33,12 +33,15 @@ jobs:
         with:
           node-version: '20'
           
-      - name: Install PostCSS CLI and plugins
+      - name: Install PostCSS
         run: |
-          npm install -g postcss-cli autoprefixer
+          npm init -y
+          npm install postcss postcss-cli autoprefixer
           
       - name: Build
-        run: hugo --minify
+        run: |
+          echo "Running Hugo build..."
+          hugo --minify --debug
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
