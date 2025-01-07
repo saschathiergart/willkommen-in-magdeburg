@@ -255,30 +255,54 @@ def debug_feed(feed_url):
         return None
 
 def main():
+    # Check OpenAI API key first
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("Error: OPENAI_API_KEY environment variable not set")
+        return
+    if not api_key.startswith("sk-"):
+        print("Error: Invalid OpenAI API key format")
+        return
+        
+    current_data = load_current_incidents()
+    new_incidents = []
+    
     # Debug feeds first
     for source in SOURCES:
         print(f"\nChecking feed: {source['feed']}")
-        feed = feedparser.parse(source['feed'])
-        
-        if feed.bozo:  # feedparser's way of indicating parsing errors
-            print(f"Error parsing feed: {feed.bozo_exception}")
-            continue
+        try:
+            # Force UTF-8 encoding for feeds
+            response = requests.get(source['feed'])
+            response.encoding = 'utf-8'
+            feed = feedparser.parse(response.text)
             
-        print(f"Found {len(feed.entries)} entries")
-        for entry in feed.entries:
-            print(f"- {entry.title}")
-            if any(keyword in entry.title.lower() or 
-                  keyword in getattr(entry, 'description', '').lower()
-                  for keyword in source['keywords']):
+            if feed.bozo:  # feedparser's way of indicating parsing errors
+                print(f"Error parsing feed: {feed.bozo_exception}")
+                continue
                 
-                print(f"  Found matching keywords in: {entry.link}")
-                article_text = extract_text_from_article(entry.link)
-                if not article_text:
-                    continue
-                
-                incident = parse_with_llm(article_text, entry.link, source['name'])
-                if incident and not is_duplicate(incident, current_data['incidents']):
-                    new_incidents.append(incident)
+            print(f"Found {len(feed.entries)} entries")
+            for entry in feed.entries:
+                print(f"- {entry.title}")
+                if any(keyword in entry.title.lower() or 
+                      keyword in getattr(entry, 'description', '').lower()
+                      for keyword in source['keywords']):
+                    
+                    print(f"  Found matching keywords in: {entry.link}")
+                    article_text = extract_text_from_article(entry.link)
+                    if not article_text:
+                        continue
+                    
+                    try:
+                        incident = parse_with_llm(article_text, entry.link, source['name'])
+                        if incident and not is_duplicate(incident, current_data['incidents']):
+                            new_incidents.append(incident)
+                    except Exception as e:
+                        print(f"Error processing article {entry.link}: {str(e)}")
+                        continue
+                        
+        except Exception as e:
+            print(f"Error processing feed {source['feed']}: {str(e)}")
+            continue
     
     if new_incidents:
         current_data['incidents'].extend(new_incidents)
