@@ -2,12 +2,14 @@ name: News Monitor
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Runs every 6 hours
-  workflow_dispatch:  # Allows manual trigger
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   monitor:
     runs-on: ubuntu-22.04
+    outputs:
+      changes_detected: ${{ steps.check_changes.outputs.changes_detected }}
     
     steps:
       - uses: actions/checkout@v3
@@ -32,4 +34,18 @@ jobs:
             echo "Error: OPENAI_API_KEY is not set"
             exit 1
           fi
-          python .github/scripts/monitor_news.py 
+          python .github/scripts/monitor_news.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --name-only | grep -q "data/incidents.json"; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: monitor
+    if: needs.monitor.outputs.changes_detected == 'true'
+    uses: ./.github/workflows/hugo-deploy.yml 

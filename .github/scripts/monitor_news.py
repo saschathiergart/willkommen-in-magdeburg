@@ -13,12 +13,30 @@ SOURCES = [
     {
         'name': 'MDR Sachsen-Anhalt',
         'feed': 'https://www.mdr.de/nachrichten/index-rss.xml',
-        'keywords': ['übergriff', 'rassismus', 'magdeburg', 'angriff', 'gewalt']
+        'keywords': [
+            'magdeburg', 
+            'rassistisch', 
+            'fremdenfeindlich',
+            'ausländerfeindlich',
+            'hassverbrechen',
+            'übergriff',
+            'angriff migranten',
+            'rassismus'
+        ]
     },
     {
         'name': 'taz',
         'feed': 'https://taz.de/!p4608;rss/',
-        'keywords': ['magdeburg', 'rassismus', 'übergriff', 'angriff', 'gewalt', 'rechtsextrem', 'fremdenfeindlich']
+        'keywords': [
+            'magdeburg',
+            'rassistisch',
+            'fremdenfeindlich',
+            'ausländerfeindlich',
+            'hassverbrechen',
+            'übergriff',
+            'angriff migranten',
+            'rassismus'
+        ]
     }
 ]
 
@@ -80,25 +98,37 @@ def extract_text_from_article(url):
 def parse_with_llm(article_text, url, source_name):
     """Use OpenAI to parse article text into structured incident data"""
     
-    prompt = f"""Extract incident information from this article text. Format as JSON with:
+    prompt = f"""Analysiere diesen Artikel nach rassistisch motivierten Vorfällen in Magdeburg.
+    Extrahiere nur Vorfälle, die:
+    1. In Magdeburg stattgefunden haben
+    2. Rassistisch oder fremdenfeindlich motiviert waren
+    3. Nach dem 19. Dezember 2023 passiert sind
+    
+    Falls kein solcher Vorfall beschrieben wird, antworte mit "null".
+    
+    Formatiere jeden Vorfall als JSON mit:
     - date (YYYY-MM-DD)
-    - location (specific place in Magdeburg)
-    - description (short factual description)
-    - sources (array with url and name)
-    - type (physical_attack, verbal_attack, property_damage, or other)
-    - status (verified if confirmed by police/officials)
+    - location (Ort in Magdeburg)
+    - description (kurze faktische Beschreibung)
+    - sources (Array mit url und name)
+    - type (physical_attack, verbal_attack, property_damage, oder other)
+    - status (verified wenn von Polizei/Behörden bestätigt)
 
-    Article text:
+    Artikel:
     {article_text}
     """
 
     response = client.chat.completions.create(
         model="gpt-4-turbo-preview",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0
     )
 
     try:
-        incident = json.loads(response.choices[0].message.content)
+        result = response.choices[0].message.content
+        if result.strip().lower() == "null":
+            return None
+        incident = json.loads(result)
         incident['sources'].append({
             'url': url,
             'name': source_name
