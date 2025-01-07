@@ -6,8 +6,8 @@
     <meta name="description" content="{{ .Site.Params.description }}">
     <title>{{ .Site.Title }}</title>
     {{ $css := resources.Get "css/main.css" }}
-    {{ $style := $css | css.PostCSS | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+    {{ $style := $css | resources.PostCSS | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Params.description }}">
     <meta property="og:type" content="website">
