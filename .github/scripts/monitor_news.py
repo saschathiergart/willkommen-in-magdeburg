@@ -30,24 +30,52 @@ def load_current_incidents():
 
 def extract_text_from_article(url):
     """Extract main article text from URL"""
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'de,en-US;q=0.7,en;q=0.3',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Cache-Control': 'max-age=0'
+    }
     
-    # MDR specific extraction
-    if 'mdr.de' in url:
-        article = soup.select_one('article')
-        if article:
-            paragraphs = article.select('p')
-            return ' '.join(p.get_text() for p in paragraphs)
-    
-    # taz specific extraction
-    if 'taz.de' in url:
-        article = soup.select_one('.article')
-        if article:
-            paragraphs = article.select('p')
-            return ' '.join(p.get_text() for p in paragraphs)
-    
-    return None
+    try:
+        response = requests.get(
+            url, 
+            headers=headers, 
+            allow_redirects=True,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # MDR specific extraction
+        if 'mdr.de' in url:
+            article = soup.select_one('article')
+            if article:
+                paragraphs = article.select('p')
+                return ' '.join(p.get_text() for p in paragraphs)
+        
+        # taz specific extraction
+        if 'taz.de' in url:
+            article = soup.select_one('.article')
+            if article:
+                paragraphs = article.select('p')
+                return ' '.join(p.get_text() for p in paragraphs)
+        
+        print(f"Could not extract text from {url}")
+        return None
+        
+    except requests.exceptions.TooManyRedirects:
+        print(f"Too many redirects for {url}")
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching {url}: {str(e)}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error processing {url}: {str(e)}")
+        return None
 
 def parse_with_llm(article_text, url, source_name):
     """Use OpenAI to parse article text into structured incident data"""
@@ -206,18 +234,44 @@ def is_duplicate(new_incident, existing_incidents):
 
     return False
 
+def debug_feed(feed_url):
+    """Debug RSS feed access"""
+    print(f"\nTesting feed: {feed_url}")
+    try:
+        response = requests.get(
+            feed_url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'application/rss+xml, application/xml'
+            },
+            allow_redirects=False  # Don't follow redirects to see what's happening
+        )
+        print(f"Status: {response.status_code}")
+        if response.status_code == 301 or response.status_code == 302:
+            print(f"Redirects to: {response.headers.get('Location')}")
+        return response.status_code
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
 def main():
-    current_data = load_current_incidents()
-    new_incidents = []
-    
+    # Debug feeds first
     for source in SOURCES:
+        print(f"\nChecking feed: {source['feed']}")
         feed = feedparser.parse(source['feed'])
         
+        if feed.bozo:  # feedparser's way of indicating parsing errors
+            print(f"Error parsing feed: {feed.bozo_exception}")
+            continue
+            
+        print(f"Found {len(feed.entries)} entries")
         for entry in feed.entries:
+            print(f"- {entry.title}")
             if any(keyword in entry.title.lower() or 
-                  keyword in entry.description.lower() 
+                  keyword in getattr(entry, 'description', '').lower()
                   for keyword in source['keywords']):
                 
+                print(f"  Found matching keywords in: {entry.link}")
                 article_text = extract_text_from_article(entry.link)
                 if not article_text:
                     continue
