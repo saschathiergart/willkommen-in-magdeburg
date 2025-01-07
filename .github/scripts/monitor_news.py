@@ -49,67 +49,70 @@ def load_current_incidents():
 def extract_text_from_article(url):
     """Extract main article text from URL"""
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'de,en-US;q=0.7,en;q=0.3',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Cache-Control': 'max-age=0'
+        'Accept-Language': 'de,en-US;q=0.7,en;q=0.3'
     }
     
     try:
-        response = requests.get(
-            url, 
-            headers=headers, 
-            allow_redirects=True,
-            timeout=30
-        )
+        response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
+        response.encoding = 'utf-8'
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
         # MDR specific extraction
         if 'mdr.de' in url:
-            article = soup.select_one('article')
+            # Try different possible article containers
+            article = (
+                soup.select_one('.content article') or 
+                soup.select_one('main article') or
+                soup.select_one('.mdr-page__content')
+            )
+            
             if article:
-                paragraphs = article.select('p')
-                return ' '.join(p.get_text() for p in paragraphs)
+                # Get text from paragraphs and headlines
+                text_elements = article.select('p, h1, h2, h3')
+                return ' '.join(elem.get_text(strip=True) for elem in text_elements)
         
         # taz specific extraction
         if 'taz.de' in url:
-            article = soup.select_one('.article')
+            article = soup.select_one('article.article')
             if article:
-                paragraphs = article.select('p')
-                return ' '.join(p.get_text() for p in paragraphs)
+                text_elements = article.select('p:not(.article__meta), h1, h2')
+                return ' '.join(elem.get_text(strip=True) for elem in text_elements)
         
-        print(f"Could not extract text from {url}")
+        print(f"Could not find article content in {url}")
         return None
         
-    except requests.exceptions.TooManyRedirects:
-        print(f"Too many redirects for {url}")
-        return None
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching {url}: {str(e)}")
-        return None
     except Exception as e:
-        print(f"Unexpected error processing {url}: {str(e)}")
+        print(f"Error extracting text from {url}: {str(e)}")
         return None
 
 def parse_with_llm(article_text, url, source_name):
     """Use OpenAI to parse article text into structured incident data"""
     
-    prompt = f"""Analysiere diesen Artikel nach rassistisch motivierten Vorfällen in Magdeburg.
-    Extrahiere nur Vorfälle, die:
-    1. In Magdeburg stattgefunden haben
-    2. Rassistisch oder fremdenfeindlich motiviert waren
-    3. Nach dem 19. Dezember 2023 passiert sind
-    
-    Falls kein solcher Vorfall beschrieben wird, antworte mit "null".
-    
-    Formatiere jeden Vorfall als JSON mit:
+    prompt = f"""Analysiere diesen Artikel streng nach folgenden Kriterien für rassistisch motivierte Vorfälle in Magdeburg.
+
+    Ein Vorfall muss ALLE diese Kriterien erfüllen:
+    1. Der Vorfall fand definitiv in Magdeburg statt
+    2. Es handelt sich eindeutig um einen rassistisch oder fremdenfeindlich motivierten Übergriff
+    3. Der Vorfall geschah nach dem 19. Dezember 2023
+    4. Der Vorfall ist durch offizielle Quellen (Polizei, Behörden) oder mehrere unabhängige Zeugen bestätigt
+    5. Es gibt eine klare rassistische oder fremdenfeindliche Motivation (z.B. durch Äußerungen oder Kontext)
+
+    Antworte mit "null" wenn:
+    - Auch nur EINES der obigen Kriterien nicht eindeutig erfüllt ist
+    - Der Artikel nur allgemein über Rassismus berichtet
+    - Der Artikel sich auf frühere Vorfälle bezieht
+    - Es Zweifel an der rassistischen Motivation gibt
+    - Der Vorfall nicht in Magdeburg stattfand
+    - Der Vorfall nicht ausreichend verifiziert ist
+
+    Falls ALLE Kriterien erfüllt sind, formatiere den Vorfall als JSON mit:
     - date (YYYY-MM-DD)
-    - location (Ort in Magdeburg)
-    - description (kurze faktische Beschreibung)
+    - location (präziser Ort in Magdeburg)
+    - description (kurze faktische Beschreibung mit Nennung der Quelle der Verifizierung)
     - sources (Array mit url und name)
     - type (physical_attack, verbal_attack, property_damage, oder other)
     - status (verified wenn von Polizei/Behörden bestätigt)
@@ -120,22 +123,31 @@ def parse_with_llm(article_text, url, source_name):
 
     response = client.chat.completions.create(
         model="gpt-4-turbo-preview",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{
+            "role": "system",
+            "content": "Du bist ein sehr kritischer Fact-Checker. Gib nur Vorfälle zurück, die zu 100% verifiziert und relevant sind."
+        }, {
+            "role": "user",
+            "content": prompt
+        }],
         temperature=0
     )
 
     try:
-        result = response.choices[0].message.content
-        if result.strip().lower() == "null":
+        result = response.choices[0].message.content.strip()
+        if result.lower() == "null":
             return None
+            
         incident = json.loads(result)
-        incident['sources'].append({
-            'url': url,
-            'name': source_name
-        })
+        # Add source if not already included
+        if not any(s['url'] == url for s in incident.get('sources', [])):
+            incident.setdefault('sources', []).append({
+                'url': url,
+                'name': source_name
+            })
         return incident
-    except:
-        print(f"Failed to parse incident from {url}")
+    except Exception as e:
+        print(f"Failed to parse incident from {url}: {str(e)}")
         return None
 
 def create_pull_request(new_incidents):

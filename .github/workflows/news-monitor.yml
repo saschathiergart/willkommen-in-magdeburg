@@ -25,6 +25,7 @@ jobs:
           pip install feedparser beautifulsoup4 requests openai
 
       - name: Run news monitor
+        id: monitor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -37,16 +38,43 @@ jobs:
           python .github/scripts/monitor_news.py
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data/incidents.json
+          
+          echo "=== News Monitor Summary ==="
+          echo "Time: $(date)"
+          
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "Status: No new incidents found"
+            echo "summary=No new incidents found" >> $GITHUB_OUTPUT
             exit 0
           else
-            git commit -m "Update incidents from news monitor"
+            # Count new incidents
+            NEW_INCIDENTS=$(git diff --staged data/incidents.json | grep -c '"date":')
+            echo "Status: Found $NEW_INCIDENTS new incidents"
+            echo "New incidents:"
+            git diff --staged data/incidents.json | grep -A 2 '"description":'
+            
+            git commit -m "Update incidents from news monitor
+            
+            Found $NEW_INCIDENTS new incidents from automated monitoring.
+            Run ID: $GITHUB_RUN_ID"
+            
             git push
+            echo "summary=Added $NEW_INCIDENTS new incidents" >> $GITHUB_OUTPUT
+          fi
+          echo "=========================="
+
+      - name: Create summary
+        run: |
+          echo "### News Monitor Results" >> $GITHUB_STEP_SUMMARY
+          echo "Run at: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "Result: ${{ steps.commit.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.commit.outputs.summary }}" != "No new incidents found" ]]; then
+            echo "Changes have been committed and pushed to the repository." >> $GITHUB_STEP_SUMMARY
           fi
 
   deploy:
