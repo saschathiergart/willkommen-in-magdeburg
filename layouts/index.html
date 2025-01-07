@@ -17,7 +17,7 @@
             <tr>
                 <th>Vorfall</th>
                 <th>Datum</th>
-                <th>Ort</th>
+                <th>Quellen</th>
             </tr>
         </thead>
         <tbody>
@@ -26,13 +26,15 @@
                 <td>
                     {{ .description }}
                     <small>
-                        {{ range .sources }}
-                            <a href="{{ .url }}" target="_blank">{{ .name }}</a>
-                        {{ end }}
+                        {{ .location }}
                     </small>
                 </td>
                 <td>{{ dateFormat "02.01.2006" .date }}</td>
-                <td>{{ .location }}</td>
+                <td>
+                    {{ range .sources }}
+                        <a href="{{ .url }}" target="_blank">{{ .name }}</a>
+                    {{ end }}
+                </td>
             </tr>
         {{ end }}
         </tbody>

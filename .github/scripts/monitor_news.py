@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 from openai import OpenAI
 import base64
+import difflib
 
 # News sources to monitor
 SOURCES = [
@@ -149,11 +150,64 @@ def create_pull_request(new_incidents):
     
     print(f"Created PR: {r.json()['html_url']}")
 
+def is_duplicate(new_incident, existing_incidents):
+    """Check if an incident is already recorded using GPT-4"""
+    # First check exact URL matches
+    for existing in existing_incidents:
+        existing_urls = {source['url'] for source in existing['sources']}
+        new_urls = {source['url'] for source in new_incident['sources']}
+        if existing_urls & new_urls:  # If there's any overlap in URLs
+            return True
+
+    # For incidents on the same date, use GPT-4 to check if they're the same
+    same_date_incidents = [
+        incident for incident in existing_incidents 
+        if incident['date'] == new_incident['date']
+    ]
+    
+    if same_date_incidents:
+        prompt = f"""Compare these incidents and determine if they are the same event reported differently.
+        Consider location, type of attack, and description details.
+        Return only "true" if they are the same incident, or "false" if different.
+
+        Incident 1:
+        Location: {new_incident['location']}
+        Description: {new_incident['description']}
+        Type: {new_incident['type']}
+
+        Compare with each:
+        {json.dumps([{
+            'location': inc['location'],
+            'description': inc['description'],
+            'type': inc['type']
+        } for inc in same_date_incidents], indent=2, ensure_ascii=False)}
+        """
+
+        response = client.chat.completions.create(
+            model="gpt-4-turbo-preview",
+            messages=[{
+                "role": "user", 
+                "content": prompt
+            }],
+            temperature=0
+        )
+
+        is_same = response.choices[0].message.content.strip().lower() == "true"
+        
+        if is_same:
+            # Merge sources if it's the same incident
+            for existing in same_date_incidents:
+                existing_urls = {source['url'] for source in existing['sources']}
+                existing['sources'].extend([
+                    s for s in new_incident['sources'] 
+                    if s['url'] not in existing_urls
+                ])
+            return True
+
+    return False
+
 def main():
     current_data = load_current_incidents()
-    existing_urls = {source['url'] for incident in current_data['incidents'] 
-                    for source in incident['sources']}
-    
     new_incidents = []
     
     for source in SOURCES:
@@ -164,15 +218,12 @@ def main():
                   keyword in entry.description.lower() 
                   for keyword in source['keywords']):
                 
-                if entry.link in existing_urls:
-                    continue
-                
                 article_text = extract_text_from_article(entry.link)
                 if not article_text:
                     continue
                 
                 incident = parse_with_llm(article_text, entry.link, source['name'])
-                if incident:
+                if incident and not is_duplicate(incident, current_data['incidents']):
                     new_incidents.append(incident)
     
     if new_incidents:
