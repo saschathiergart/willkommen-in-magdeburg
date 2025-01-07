@@ -24,45 +24,122 @@
         {
           "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
           "name": "taz"
+        },
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
         }
       ]
     },
     {
       "date": "2024-01-01",
-      "location": "Haltestelle Neustadt, Magdeburg",
-      "description": "Der 31-jährige DJ Brahim B. wurde von einer Gruppe von 5 Männern und einer Frau angegriffen. Er wurde an der Jacke gepackt, geschlagen und mit einem Teleskopschlagstock attackiert",
+      "location": "Haltestelle Bahnhof Neustadt, Magdeburg",
+      "description": "Der 31-jährige DJ Brahim B. wurde von einer Gruppe von 5 Männern und einer Frau mit Bierflaschen und Stöcken angegriffen. Der Mann kam schwer verletzt ins Krankenhaus",
       "type": "physical_attack",
       "status": "verified",
       "sources": [
         {
           "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
           "name": "taz"
+        },
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
+        }
+      ]
+    },
+    {
+      "date": "2023-12-28",
+      "location": "Hauptbahnhof Magdeburg",
+      "description": "Eine Frau aus Iran wurde im Magdeburger Hauptbahnhof bespuckt und rassistisch beleidigt",
+      "type": "verbal_attack",
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
         }
       ]
     },
     {
       "date": "2023-12-24",
-      "location": "Magdeburg",
-      "description": "Eine 22-jährige Intensivkrankenschwester (die Opfer des ursprünglichen Angriffs behandelte) wurde nach ihrer Schicht rassistisch beleidigt und ins Gesicht geschlagen",
+      "location": "Hasselbachplatz, Magdeburg",
+      "description": "Eine 22-jährige Intensivkrankenschwester (die Opfer des ursprünglichen Angriffs behandelte) wurde von einem Betrunkenen rassistisch beleidigt und ins Gesicht geschlagen. Der Täter zeigte auch den Hitlergruß und wurde von der Polizei in Gewahrsam genommen",
       "type": "physical_attack",
       "status": "verified",
       "sources": [
         {
           "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
           "name": "taz"
+        },
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
         }
       ]
     },
     {
       "date": "2023-12-23",
-      "location": "Magdeburg",
-      "description": "Ein 13-jähriger Junge wurde im Aufzug seines Wohnhauses rassistisch beleidigt und gewürgt",
+      "location": "Otto-von-Guericke-Straße, Magdeburg",
+      "description": "Eine Frau wurde zunächst verbal bedroht und anschließend geschlagen. Der Täter rief unter anderem 'Wir vergasen euch alle'",
       "type": "physical_attack",
       "status": "verified",
       "sources": [
         {
-          "url": "https://taz.de/Nach-dem-Anschlag-von-Magdeburg/!6056886/",
-          "name": "taz"
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
+        }
+      ]
+    },
+    {
+      "date": "2023-12-22",
+      "location": "Breiter Weg, Magdeburg",
+      "description": "Ein Mann wurde von einem Unbekannten geschlagen und mit den Worten 'Verpiss dich in dein Land und lieg uns Deutschen nicht weiter auf der Tasche' beleidigt",
+      "type": "physical_attack",
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
+        }
+      ]
+    },
+    {
+      "date": "2023-12-21",
+      "location": "Hauptbahnhof Magdeburg",
+      "description": "Eine Gruppe Menschen, die vorher eine Demonstration am Hasselbachplatz besucht hatte, beleidigte am Magdeburger Hauptbahnhof eine Person",
+      "type": "verbal_attack",
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
+        }
+      ]
+    },
+    {
+      "date": "2023-12-21",
+      "location": "Breiter Weg, Magdeburg",
+      "description": "Ein Mann wurde von einem Unbekannten von einem Fahrrad gestoßen und beleidigt",
+      "type": "physical_attack",
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
+        }
+      ]
+    },
+    {
+      "date": "2023-12-20",
+      "location": "Ernst-Reuter-Allee, Magdeburg",
+      "description": "Ein Deutscher schlug einem Mann mit Migrationsgeschichte mit der Faust ins Gesicht und sagte: 'Wegen Leuten wie dir passiert sowas'",
+      "type": "physical_attack",
+      "status": "verified",
+      "sources": [
+        {
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "name": "MDR"
         }
       ]
     }
