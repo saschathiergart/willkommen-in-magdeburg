@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ .Site.Params.description }}">
     <title>{{ .Site.Title }}</title>
-    {{ $css := resources.Get "css/main.css" }}
-    {{ $style := $css | css.Sass | resources.Minify }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    {{ $style := resources.Get "css/main.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Params.description }}">
     <meta property="og:type" content="website">
