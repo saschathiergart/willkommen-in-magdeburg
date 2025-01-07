@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ .Site.Params.description }}">
+    <title>{{ .Site.Title }}</title>
+    {{ $css := resources.Get "css/main.css" }}
+    {{ $style := $css | resources.ToCSS | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    <meta property="og:title" content="{{ .Site.Title }}">
+    <meta property="og:description" content="{{ .Site.Params.description }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+</head>
+<body>
+    <main>
+        {{ block "main" . }}{{ end }}
+    </main>
+</body>
+</html> 

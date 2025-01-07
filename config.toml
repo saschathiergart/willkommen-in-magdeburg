@@ -1,0 +1,6 @@
+baseURL = 'https://willkommen-in-magdeburg.de/'
+languageCode = 'de-de'
+title = 'Dokumentation rechter Gewalt in Magdeburg'
+
+[params]
+  description = "Dokumentation verifizierter Vorfälle rechter Gewalt in Magdeburg" 

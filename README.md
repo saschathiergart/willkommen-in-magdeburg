@@ -2,7 +2,7 @@
 
 ## Context
 
-This project documents verified incidents of retaliatory violence following the tragic events in Magdeburg. Our goal is to:
+This project documents verified incidents of retaliatory violence following the tragic events in Magdeburg on December 19th, 2023. Our goal is to:
 
 - Provide transparent, fact-based reporting of verified incidents
 - Raise awareness about the impact of hate-motivated violence
@@ -23,6 +23,20 @@ All incidents are documented with:
 - Official incident reports where available
 - Links to verified news sources
 - Short description of the incident
+
+## Automation
+
+This tracker is automatically updated through:
+
+1. Automated monitoring of news sources every 6 hours
+2. AI-powered extraction of incident details
+3. Pull request creation for manual verification
+
+News sources currently monitored:
+- MDR Sachsen-Anhalt RSS Feed
+
+All updates go through manual review before being published to ensure accuracy.
+
 ## Contributing
 
 Please see our contributing guidelines for information on how to submit verified incidents to this tracker. 

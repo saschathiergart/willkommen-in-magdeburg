@@ -1,0 +1,119 @@
+{
+  "incidents": [
+    {
+      "id": "2023-12-20-001",
+      "date": "2023-12-20T20:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Ernst-Reuter-Allee",
+        "coordinates": null
+      },
+      "description": "Ein Deutscher schlug einem Mann mit Migrationsgeschichte mit der Faust ins Gesicht und sagte: 'Wegen Leuten wie dir passiert sowas'",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    },
+    {
+      "id": "2023-12-21-001",
+      "date": "2023-12-21T12:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Breiter Weg",
+        "coordinates": null
+      },
+      "description": "Ein Mann wurde von einem Unbekannten von einem Fahrrad gestoßen und rassistisch beleidigt",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    },
+    {
+      "id": "2023-12-22-001",
+      "date": "2023-12-22T14:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Breiter Weg",
+        "coordinates": null
+      },
+      "description": "Ein Mann wurde von einem Unbekannten geschlagen und mit den Worten 'Verpiss dich in dein Land und lieg uns Deutschen nicht weiter auf der Tasche' beleidigt",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    },
+    {
+      "id": "2023-12-23-001",
+      "date": "2023-12-23T16:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Otto-von-Guericke-Straße",
+        "coordinates": null
+      },
+      "description": "Eine Frau wurde verbal bedroht und geschlagen. Der Täter rief u.a. 'Wir vergasen euch alle'",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    },
+    {
+      "id": "2023-12-28-001",
+      "date": "2023-12-28T13:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Hauptbahnhof",
+        "coordinates": null
+      },
+      "description": "Eine Frau aus dem Iran wurde im Hauptbahnhof bespuckt und rassistisch beleidigt",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    },
+    {
+      "id": "2024-01-01-001",
+      "date": "2024-01-01T00:00:00+01:00",
+      "location": {
+        "city": "Magdeburg",
+        "district": "Bahnhof Neustadt",
+        "coordinates": null
+      },
+      "description": "Ein 31-jähriger Mann wurde von sechs Personen (5 Männer, 1 Frau) mit Bierflaschen und Stöcken angegriffen und schwer verletzt",
+      "sources": [
+        {
+          "name": "MDR",
+          "url": "https://www.mdr.de/nachrichten/sachsen-anhalt/magdeburg/magdeburg/attentat-weihnachtsmarkt-neue-details-gewaltsame-angriffe-migranten-112.html",
+          "date": "2025-01-07"
+        }
+      ],
+      "officialReportId": null,
+      "verificationStatus": "verified"
+    }
+  ],
+  "lastUpdated": "2024-01-07T14:00:00Z"
+} 
