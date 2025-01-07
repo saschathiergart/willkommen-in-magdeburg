@@ -6,7 +6,7 @@
     <meta name="description" content="{{ .Site.Params.description }}">
     <title>{{ .Site.Title }}</title>
     {{ $css := resources.Get "css/main.css" }}
-    {{ $style := $css | resources.ToCSS | resources.Minify }}
+    {{ $style := $css | css.Sass | resources.Minify }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Params.description }}">
