@@ -11,30 +11,30 @@
 </section>
 
 <section id="incidents" class="incidents">
+    <h2>Chronik der Vorfälle</h2>
     <table>
         <thead>
             <tr>
-                <th>Übergriff</th>
+                <th>Vorfall</th>
                 <th>Datum</th>
-                <th>Quellen</th>
+                <th>Ort</th>
             </tr>
         </thead>
         <tbody>
-            {{ range sort .Site.Data.incidents.incidents "date" "desc" }}
+        {{ range .Site.Data.incidents.incidents }}
             <tr>
                 <td>
                     {{ .description }}
-                    <br>
-                    <small>{{ .location.district }}, {{ .location.city }}</small>
+                    <small>
+                        {{ range .sources }}
+                            <a href="{{ .url }}" target="_blank">{{ .name }}</a>
+                        {{ end }}
+                    </small>
                 </td>
                 <td>{{ dateFormat "02.01.2006" .date }}</td>
-                <td>
-                    {{ range .sources }}
-                    <a href="{{ .url }}" target="_blank">{{ .name }}</a>
-                    {{ end }}
-                </td>
+                <td>{{ .location }}</td>
             </tr>
-            {{ end }}
+        {{ end }}
         </tbody>
     </table>
 </section>
