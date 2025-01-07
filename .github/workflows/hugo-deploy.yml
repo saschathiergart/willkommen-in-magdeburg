@@ -28,20 +28,13 @@ jobs:
           hugo-version: 'latest'
           extended: true
           
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
-      - name: Install PostCSS
+      - name: Copy assets
         run: |
-          npm init -y
-          npm install postcss postcss-cli autoprefixer
+          mkdir -p static/css
+          cp assets/css/main.css static/css/
           
       - name: Build
-        run: |
-          echo "Running Hugo build..."
-          hugo --minify
+        run: hugo --minify
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
