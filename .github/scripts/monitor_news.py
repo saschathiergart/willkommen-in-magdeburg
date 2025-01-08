@@ -97,7 +97,7 @@ def parse_with_llm(article_text, url, source_name):
     Ein Vorfall muss ALLE diese Kriterien erfüllen:
     1. Der Vorfall fand definitiv in Magdeburg statt
     2. Es handelt sich eindeutig um einen rassistisch oder fremdenfeindlich motivierten Übergriff
-    3. Der Vorfall geschah nach dem 20. Dezember 2023
+    3. Der Vorfall geschah nach dem 20. Dezember 2024
     4. Der Vorfall ist durch offizielle Quellen (Polizei, Behörden) oder mehrere unabhängige Zeugen bestätigt
     5. Es gibt eine klare rassistische oder fremdenfeindliche Motivation (z.B. durch Äußerungen oder Kontext)
 
