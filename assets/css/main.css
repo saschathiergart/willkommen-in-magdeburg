@@ -37,7 +37,7 @@ body {
 .hero-image {
     width: 55%;
     height: 100vh;
-    background-image: url('/willkommen-in-magdeburg/images/hero-image.jpg');
+    background-image: url('/magdeburg/images/hero-image.jpg');
     background-size: cover;
     background-position: center;
 }
