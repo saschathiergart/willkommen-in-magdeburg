@@ -297,6 +297,9 @@ def debug_feed(feed_url):
         return None
 
 def main():
+    print("\n=== News Monitor Starting ===")
+    print(f"Time: {datetime.now().isoformat()}")
+    
     # Check OpenAI API key first
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
@@ -308,28 +311,34 @@ def main():
         
     current_data = load_current_incidents()
     new_incidents = []
+    articles_checked = 0
+    keywords_matched = 0
     
-    # Debug feeds first
+    print("\nCurrent incidents in database:", len(current_data['incidents']))
+    
     for source in SOURCES:
-        print(f"\nChecking feed: {source['feed']}")
+        print(f"\nProcessing feed: {source['feed']}")
         try:
-            # Force UTF-8 encoding for feeds
             response = requests.get(source['feed'])
             response.encoding = 'utf-8'
             feed = feedparser.parse(response.text)
             
-            if feed.bozo:  # feedparser's way of indicating parsing errors
+            if feed.bozo:
                 print(f"Error parsing feed: {feed.bozo_exception}")
                 continue
                 
             print(f"Found {len(feed.entries)} entries")
+            
             for entry in feed.entries:
-                print(f"- {entry.title}")
+                articles_checked += 1
                 if any(keyword in entry.title.lower() or 
                       keyword in getattr(entry, 'description', '').lower()
                       for keyword in source['keywords']):
                     
-                    print(f"  Found matching keywords in: {entry.link}")
+                    keywords_matched += 1
+                    print(f"\nPotential incident found in: {entry.title}")
+                    print(f"URL: {entry.link}")
+                    
                     article_text = extract_text_from_article(entry.link)
                     if not article_text:
                         continue
@@ -337,19 +346,33 @@ def main():
                     try:
                         incident = parse_with_llm(article_text, entry.link, source['name'])
                         if incident and not is_duplicate(incident, current_data['incidents']):
+                            print("✓ New verified incident found!")
+                            print(f"Location: {incident['location']}")
+                            print(f"Date: {incident['date']}")
+                            print(f"Type: {incident['type']}")
                             new_incidents.append(incident)
                     except Exception as e:
-                        print(f"Error processing article {entry.link}: {str(e)}")
+                        print(f"Error processing article: {str(e)}")
                         continue
                         
         except Exception as e:
-            print(f"Error processing feed {source['feed']}: {str(e)}")
+            print(f"Error processing feed: {str(e)}")
             continue
+    
+    print("\n=== News Monitor Summary ===")
+    print(f"Articles checked: {articles_checked}")
+    print(f"Keyword matches: {keywords_matched}")
+    print(f"New incidents found: {len(new_incidents)}")
     
     if new_incidents:
         current_data['incidents'].extend(new_incidents)
         current_data['lastUpdated'] = datetime.utcnow().isoformat() + 'Z'
         create_pull_request(current_data)
+        print("\nCreated pull request with new incidents")
+    else:
+        print("\nNo new incidents to add")
+    
+    print("==========================")
 
 if __name__ == '__main__':
     main() 
