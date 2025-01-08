@@ -51,6 +51,20 @@ SOURCES = [
             'angriff migranten',
             'rassismus'
         ]
+    },
+    {
+        'name': 'Mobile Opferberatung',
+        'feed': 'https://www.mobile-opferberatung.de/monitoring/chronik-2024',
+        'keywords': [
+            'magdeburg',
+            'rassistisch',
+            'fremdenfeindlich',
+            'ausländerfeindlich',
+            'hassverbrechen',
+            'übergriff',
+            'angriff migranten',
+            'rassismus'
+        ]
     }
 ]
 
