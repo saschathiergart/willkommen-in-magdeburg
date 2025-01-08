@@ -37,6 +37,20 @@ SOURCES = [
             'angriff migranten',
             'rassismus'
         ]
+    },
+    {
+        'name': 'sz',
+        'feed': 'https://rss.sueddeutsche.de/alles',
+        'keywords': [
+            'magdeburg',
+            'rassistisch',
+            'fremdenfeindlich',
+            'ausländerfeindlich',
+            'hassverbrechen',
+            'übergriff',
+            'angriff migranten',
+            'rassismus'
+        ]
     }
 ]
 
