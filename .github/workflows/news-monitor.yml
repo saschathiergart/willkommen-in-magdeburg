@@ -1,5 +1,10 @@
 name: News Monitor
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   schedule:
     - cron: '0 */6 * * *'
@@ -8,10 +13,6 @@ on:
 jobs:
   monitor:
     runs-on: ubuntu-22.04
-    permissions:
-      contents: write
-      id-token: write
-    
     steps:
       - uses: actions/checkout@v3
       
