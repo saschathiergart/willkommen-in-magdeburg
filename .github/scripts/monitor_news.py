@@ -65,6 +65,20 @@ SOURCES = [
             'angriff migranten',
             'rassismus'
         ]
+    },
+    {
+        'name': 'Landesportal Sachsen-Anhalt - Pressemitteilungen der Polizei',
+        'feed': 'https://www.sachsen-anhalt.de/bs/pressemitteilungen/rss-feeds?tx_tsarssinclude_rss%5Baction%5D=feed&tx_tsarssinclude_rss%5Bcontroller%5D=Rss&tx_tsarssinclude_rss%5Buid%5D=75&type=9988&cHash=6052a14b7487702c9e9ca69eac34418a',
+        'keywords': [
+            'magdeburg',
+            'rassistisch',
+            'fremdenfeindlich',
+            'ausländerfeindlich',
+            'hassverbrechen',
+            'übergriff',
+            'angriff migranten',
+            'rassismus'
+        ]
     }
 ]
 
